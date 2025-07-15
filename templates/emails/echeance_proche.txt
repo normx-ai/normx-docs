@@ -1,0 +1,19 @@
+Bonjour {{ user_name }},
+
+ATTENTION ! Une échéance approche pour le dossier suivant :
+
+Détails du dossier :
+- Client : {{ client_name }}
+- Référence dossier : {{ dossier_reference }}
+- Date d'échéance : {{ echeance_date }}
+- Jours restants : {{ days_remaining }} jour(s)
+
+Il est important de traiter ce dossier dans les plus brefs délais pour respecter les échéances légales.
+
+Pour consulter le dossier : {{ app_url }}/dossiers/{{ dossier_reference }}
+
+Cordialement,
+L'équipe du Cabinet Comptable
+
+---
+Cet email a été envoyé automatiquement. Merci de ne pas y répondre.

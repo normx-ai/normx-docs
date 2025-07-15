@@ -1,0 +1,23 @@
+Bonjour {{ user_name }},
+
+DOCUMENTS MANQUANTS ! Des documents sont requis pour compléter le dossier.
+
+Informations du dossier :
+- Client : {{ client_name }}
+- Référence dossier : {{ dossier_reference }}
+- Période concernée : {{ periode }}
+
+Documents manquants :
+{% for document in documents_manquants %}
+- {{ document }}
+{% endfor %}
+
+Ces documents sont nécessaires pour pouvoir traiter le dossier. Merci de les fournir dès que possible.
+
+Pour ajouter les documents : {{ app_url }}/dossiers/{{ dossier_reference }}?tab=documents
+
+Cordialement,
+L'équipe du Cabinet Comptable
+
+---
+Cet email a été envoyé automatiquement. Merci de ne pas y répondre.

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Documents manquants - {{ client_name }}{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ user_name }},</h2>
+
+<div class="alert alert-danger">
+    <strong>Documents manquants !</strong> Des documents sont requis pour compléter le dossier.
+</div>
+
+<h3>Informations du dossier</h3>
+<ul class="list-unstyled">
+    <li><strong>Client :</strong> {{ client_name }}</li>
+    <li><strong>Référence dossier :</strong> {{ dossier_reference }}</li>
+    <li><strong>Période concernée :</strong> {{ periode }}</li>
+</ul>
+
+<h3>Documents manquants</h3>
+<ul>
+    {% for document in documents_manquants %}
+    <li>{{ document }}</li>
+    {% endfor %}
+</ul>
+
+<p>Ces documents sont nécessaires pour pouvoir traiter le dossier. Merci de les fournir dès que possible.</p>
+
+<div style="text-align: center;">
+    <a href="{{ app_url }}/dossiers/{{ dossier_reference }}?tab=documents" class="button">Ajouter les documents</a>
+</div>
+
+<p>Cordialement,<br>
+L'équipe du Cabinet Comptable</p>
+{% endblock %}

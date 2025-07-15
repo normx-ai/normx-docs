@@ -1,0 +1,24 @@
+Bonjour {{ user_name }},
+
+TÂCHES EN RETARD ! Des tâches sont en retard pour le dossier suivant.
+
+Informations du dossier :
+- Client : {{ client_name }}
+- Référence dossier : {{ dossier_reference }}
+
+Tâches en retard :
+{% for tache in taches_retard %}
+- {{ tache.nom }}
+  Date d'échéance : {{ tache.date_echeance }}
+  Retard : {{ tache.jours_retard }} jour(s)
+{% endfor %}
+
+Il est urgent de traiter ces tâches pour éviter des pénalités ou des complications administratives.
+
+Pour traiter les tâches : {{ app_url }}/dossiers/{{ dossier_reference }}
+
+Cordialement,
+L'équipe du Cabinet Comptable
+
+---
+Cet email a été envoyé automatiquement. Merci de ne pas y répondre.

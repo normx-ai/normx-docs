@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Échéance proche - {{ client_name }}{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ user_name }},</h2>
+
+<div class="alert alert-warning">
+    <strong>Attention !</strong> Une échéance approche pour le dossier suivant :
+</div>
+
+<h3>Détails du dossier</h3>
+<ul class="list-unstyled">
+    <li><strong>Client :</strong> {{ client_name }}</li>
+    <li><strong>Référence dossier :</strong> {{ dossier_reference }}</li>
+    <li><strong>Date d'échéance :</strong> {{ echeance_date }}</li>
+    <li><strong>Jours restants :</strong> {{ days_remaining }} jour(s)</li>
+</ul>
+
+<p>Il est important de traiter ce dossier dans les plus brefs délais pour respecter les échéances légales.</p>
+
+<div style="text-align: center;">
+    <a href="{{ app_url }}/dossiers/{{ dossier_reference }}" class="button">Voir le dossier</a>
+</div>
+
+<p>Cordialement,<br>
+L'équipe du Cabinet Comptable</p>
+{% endblock %}

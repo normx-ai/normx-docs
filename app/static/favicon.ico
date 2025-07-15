@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Version ICO simplifiée -->
+  <rect width="32" height="32" rx="6" fill="#1976d2"/>
+  <path d="M6 10 L6 24 L26 24 L26 12 L16 12 L14 10 Z" fill="#ffffff" opacity="0.9"/>
+  <path d="M6 12 L26 12 L26 24 L6 24 Z" fill="#e3f2fd"/>
+  <path d="M11 18 L14 21 L21 14" stroke="#1976d2" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="8" r="4" fill="#ff5252"/>
+</svg>

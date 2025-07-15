@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Tâches en retard - {{ client_name }}{% endblock %}
+
+{% block content %}
+<h2>Bonjour {{ user_name }},</h2>
+
+<div class="alert alert-danger">
+    <strong>Tâches en retard !</strong> Des tâches sont en retard pour le dossier suivant.
+</div>
+
+<h3>Informations du dossier</h3>
+<ul class="list-unstyled">
+    <li><strong>Client :</strong> {{ client_name }}</li>
+    <li><strong>Référence dossier :</strong> {{ dossier_reference }}</li>
+</ul>
+
+<h3>Tâches en retard</h3>
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <thead>
+        <tr style="background-color: #ecf0f1;">
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #bdc3c7;">Tâche</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #bdc3c7;">Date d'échéance</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #bdc3c7;">Retard</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tache in taches_retard %}
+        <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #ecf0f1;">{{ tache.nom }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ecf0f1;">{{ tache.date_echeance }}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #ecf0f1; color: #e74c3c; font-weight: bold;">{{ tache.jours_retard }} jour(s)</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>Il est urgent de traiter ces tâches pour éviter des pénalités ou des complications administratives.</p>
+
+<div style="text-align: center;">
+    <a href="{{ app_url }}/dossiers/{{ dossier_reference }}" class="button">Traiter les tâches</a>
+</div>
+
+<p>Cordialement,<br>
+L'équipe du Cabinet Comptable</p>
+{% endblock %}

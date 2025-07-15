@@ -1,0 +1,25 @@
+Bienvenue {{ user_name }} !
+
+Votre compte a été créé avec succès sur la plateforme Cabinet Comptable.
+
+Vos identifiants de connexion :
+- Nom d'utilisateur : {{ username }}
+- Mot de passe temporaire : {{ temporary_password }}
+
+IMPORTANT ! Pour des raisons de sécurité, nous vous recommandons de changer votre mot de passe lors de votre première connexion.
+
+Premiers pas :
+1. Connectez-vous à la plateforme en utilisant vos identifiants
+2. Changez votre mot de passe temporaire
+3. Complétez votre profil
+4. Découvrez les fonctionnalités de la plateforme
+
+Pour vous connecter : {{ app_url }}/login
+
+Si vous avez des questions ou besoin d'aide, n'hésitez pas à contacter votre administrateur.
+
+Cordialement,
+L'équipe du Cabinet Comptable
+
+---
+Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
