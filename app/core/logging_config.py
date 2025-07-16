@@ -160,50 +160,29 @@ def get_logger(name: str) -> logging.Logger:
 # Middleware pour ajouter des informations contextuelles aux logs
 class LoggingContextMiddleware:
     """Middleware pour ajouter le contexte de la requête aux logs"""
-    
     def __init__(self, app):
         self.app = app
     
-    async def __call__(self, request, call_next):
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+            
         import uuid
-        from fastapi import Request
+        import contextvars
         
         # Générer un ID unique pour la requête
         request_id = str(uuid.uuid4())
         
         # Ajouter les informations au contexte de logging
-        import contextvars
         request_id_var = contextvars.ContextVar('request_id', default=None)
         request_id_var.set(request_id)
         
         # Logger la requête entrante
         access_logger = logging.getLogger('access')
-        access_logger.info(
-            f"Request started",
-            extra={
-                'request_id': request_id,
-                'method': request.method,
-                'path': request.url.path,
-                'ip_address': request.client.host if request.client else 'unknown'
-            }
-        )
+        path = scope.get("path", "")
+        method = scope.get("method", "")
+        access_logger.info(f"Request {request_id}: {method} {path}")
         
-        # Exécuter la requête
-        start_time = datetime.utcnow()
-        response = await call_next(request)
-        duration_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
-        
-        # Logger la réponse
-        access_logger.info(
-            f"Request completed",
-            extra={
-                'request_id': request_id,
-                'status_code': response.status_code,
-                'duration_ms': duration_ms
-            }
-        )
-        
-        # Ajouter l'ID de requête dans les headers de réponse
-        response.headers["X-Request-ID"] = request_id
-        
-        return response
+        # Passer la requête à l'application
+        await self.app(scope, receive, send)

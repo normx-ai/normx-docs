@@ -1,10 +1,6 @@
 """
 Middleware pour ajouter les headers de sécurité nécessaires
 """
-from fastapi import Request
-from fastapi.responses import Response
-from typing import Callable
-
 
 class SecurityHeadersMiddleware:
     """Middleware pour ajouter les headers de sécurité recommandés"""
@@ -12,39 +8,47 @@ class SecurityHeadersMiddleware:
     def __init__(self, app):
         self.app = app
     
-    async def __call__(self, request: Request, call_next: Callable) -> Response:
-        response = await call_next(request)
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
         
-        # Headers de sécurité essentiels
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["X-XSS-Protection"] = "1; mode=block"
-        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        async def send_wrapper(message):
+            if message["type"] == "http.response.start":
+                headers = dict(message.get("headers", []))
+                
+                # Headers de sécurité essentiels
+                headers[b"x-content-type-options"] = b"nosniff"
+                headers[b"x-frame-options"] = b"DENY"
+                headers[b"x-xss-protection"] = b"1; mode=block"
+                headers[b"referrer-policy"] = b"strict-origin-when-cross-origin"
+                
+                # Content Security Policy basique
+                headers[b"content-security-policy"] = (
+                    b"default-src 'self'; "
+                    b"script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
+                    b"style-src 'self' 'unsafe-inline'; "
+                    b"img-src 'self' data: https:; "
+                    b"font-src 'self' data:; "
+                    b"connect-src 'self' ws: wss:; "
+                    b"frame-ancestors 'none';"
+                )
+                
+                # Permissions Policy
+                headers[b"permissions-policy"] = (
+                    b"accelerometer=(), "
+                    b"camera=(), "
+                    b"geolocation=(), "
+                    b"gyroscope=(), "
+                    b"magnetometer=(), "
+                    b"microphone=(), "
+                    b"payment=(), "
+                    b"usb=()"
+                )
+                
+                # Reconstruire les headers
+                message["headers"] = [[k, v] for k, v in headers.items()]
+            
+            await send(message)
         
-        # Content Security Policy basique
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
-            "style-src 'self' 'unsafe-inline'; "
-            "img-src 'self' data: https:; "
-            "font-src 'self' data:; "
-            "connect-src 'self' ws: wss:; "
-            "frame-ancestors 'none';"
-        )
-        
-        # Permissions Policy (anciennement Feature Policy)
-        response.headers["Permissions-Policy"] = (
-            "accelerometer=(), "
-            "camera=(), "
-            "geolocation=(), "
-            "gyroscope=(), "
-            "magnetometer=(), "
-            "microphone=(), "
-            "payment=(), "
-            "usb=()"
-        )
-        
-        # Strict Transport Security (HSTS) - À activer uniquement avec HTTPS
-        # response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-        
-        return response
+        await self.app(scope, receive, send_wrapper)
