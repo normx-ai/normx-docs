@@ -57,6 +57,11 @@ dmypy.json
 logs/
 *.log
 
+# Temporary files
+*_TEMP.*
+test_*.py
+start_*.py
+
 # Models
 models/*.pkl
 models/*.joblib
