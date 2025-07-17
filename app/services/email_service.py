@@ -21,15 +21,15 @@ class EmailService:
         # Configuration SMTP
         self.smtp_host = settings.SMTP_HOST
         self.smtp_port = settings.SMTP_PORT
-        self.smtp_user = settings.SMTP_USER
+        self.smtp_user = settings.SMTP_USERNAME
         self.smtp_password = settings.SMTP_PASSWORD
         self.smtp_from_email = settings.SMTP_FROM_EMAIL
         self.smtp_from_name = settings.SMTP_FROM_NAME
-        self.smtp_tls = settings.SMTP_TLS
-        self.smtp_ssl = settings.SMTP_SSL
+        self.smtp_tls = getattr(settings, 'SMTP_TLS', True)
+        self.smtp_ssl = getattr(settings, 'SMTP_SSL', False)
         
         # Créer le répertoire des templates s'il n'existe pas
-        template_dir = Path(settings.EMAIL_TEMPLATES_DIR)
+        template_dir = Path(getattr(settings, 'EMAIL_TEMPLATES_DIR', 'templates/email'))
         template_dir.mkdir(parents=True, exist_ok=True)
         
         # Configuration Jinja2 pour les templates

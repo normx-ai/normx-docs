@@ -7,8 +7,8 @@ from app.core.config import settings
 
 engine = create_engine(
     settings.DATABASE_URL,
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
+    pool_size=getattr(settings, 'DATABASE_POOL_SIZE', 5),
+    max_overflow=getattr(settings, 'DATABASE_MAX_OVERFLOW', 10),
     poolclass=NullPool if settings.ENV == "test" else None,
 )
 
